@@ -1,14 +1,20 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import './Post.css';
 
-const post = () => (
+const post = ({ title, author }) => (
   <article className="Post">
-    <h1>Title</h1>
+    <h1>{title}</h1>
     <div className="Info">
-      <div className="Author">Author</div>
+      <div className="Author">{author}</div>
     </div>
   </article>
 );
+
+post.propTypes = {
+  title: PropTypes.string.isRequired,
+  author: PropTypes.string.isRequired
+};
 
 export default post;
