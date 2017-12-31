@@ -8,7 +8,8 @@ import './Blog.css';
 
 class Blog extends Component {
   state = {
-    posts: []
+    posts: [],
+    selectedPost: null
   };
 
   componentDidMount() {
@@ -24,6 +25,21 @@ class Blog extends Component {
     });
   }
 
+  postClickedHandler = id => {
+    axios
+      .get(`https://jsonplaceholder.typicode.com/posts/${id}`)
+      .then(response => {
+        const postWithAuthor = {
+          ...response.data,
+          author: 'Max'
+        };
+
+        this.setState({
+          selectedPost: postWithAuthor
+        });
+      });
+  };
+
   render() {
     return (
       <div>
@@ -31,11 +47,16 @@ class Blog extends Component {
           {this.state.posts
             .filter((post, index) => index <= 3)
             .map(post => (
-              <Post key={post.id} title={post.title} author={post.author} />
+              <Post
+                key={post.id}
+                title={post.title}
+                author={post.author}
+                onClick={() => this.postClickedHandler(post.id)}
+              />
             ))}
         </section>
         <section>
-          <FullPost />
+          <FullPost post={this.state.selectedPost} />
         </section>
         <section>
           <NewPost />
